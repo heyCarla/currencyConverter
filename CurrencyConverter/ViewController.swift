@@ -16,11 +16,32 @@ class ViewController: UIViewController {
         
         // TODO: set actual bg colour, for now use default fugly green
         self.view.backgroundColor = UIColor.greenColor()
-    }
 
+        setCashConverterViewLayout()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setCashConverterViewLayout(){
+        
+        let xLoc:CGFloat        = 0
+        var yLoc:CGFloat        = xLoc
+        let viewWidth:CGFloat   = self.view.frame.size.width
+        let viewHeight:CGFloat  = self.view.frame.size.height/2
+        
+        // AUD currency view
+        let audCurrenceyView = AUDCurrenceyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
+        self.view.addSubview(audCurrenceyView)
+        
+        yLoc += viewHeight
+        
+        // Foreign currency view
+        let foreignCurrencyView = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
+        foreignCurrencyView.backgroundColor = UIColor.blueColor()
+        self.view.addSubview(foreignCurrencyView)
     }
 }
 
