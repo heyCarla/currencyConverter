@@ -40,7 +40,6 @@ class ViewController: UIViewController {
         
         // Foreign currency view
         let foreignCurrencyView = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
-        foreignCurrencyView.backgroundColor = UIColor.blueColor()
         self.view.addSubview(foreignCurrencyView)
     }
 }
