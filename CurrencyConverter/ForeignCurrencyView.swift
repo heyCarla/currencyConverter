@@ -11,7 +11,8 @@ import UIKit
 
 class ForeignCurrencyView: UIView {
     
-    var yLoc:CGFloat = 20
+    let foreignCurrencyArray    = ["CAD", "EUR", "GBP", "JPY", "USD"]
+    var yLoc:CGFloat            = 20
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,12 +36,8 @@ class ForeignCurrencyView: UIView {
         
         yLoc += viewBorder.frame.size.height
         
-        // TODO: foreign currency selection (UICollectionView?)
-        let view = UIView(frame: CGRect(x: 0, y: yLoc, width: viewWidth, height: 80))
-        view.backgroundColor = UIColor.blueColor()
-        self.addSubview(view)
-        
-        /////////////
+        // foreign currency selection via UICollectionView
+        createCollectionViewElements()
         
         // down arrow
         let arrowWidth:CGFloat  = 20
@@ -54,14 +51,10 @@ class ForeignCurrencyView: UIView {
         
         // up arrow
         let upArrowImageView  = UIImageView(image: UIImage(named: "assets/Indicator_2.png"))
-        let upArrowYPos       = view.frame.size.height-(arrowHeight/2.5)
-//        upArrowImageView.backgroundColor = UIColor.yellowColor()
+        let upArrowYPos       = yLoc-(arrowHeight/2.5)
+        upArrowImageView.backgroundColor = UIColor.yellowColor()
         upArrowImageView.frame = CGRect(x: arrowXPos, y: upArrowYPos, width: arrowWidth, height: arrowHeight)
         self.addSubview(upArrowImageView)
-
-        
-        let offset:CGFloat = 30
-        yLoc += view.frame.size.height+offset
         
         // converted foreign currency label
         let convertedLabelWidth:CGFloat     = self.frame.size.width-100
@@ -76,6 +69,26 @@ class ForeignCurrencyView: UIView {
         
         // TODO: set dynamic text
         convertedCurrencyLabel.text = "$888888888"
+    }
+    
+    func createCollectionViewElements(){
+
+        let flowLayout                  = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection      = UICollectionViewScrollDirection.Horizontal
+        flowLayout.minimumLineSpacing   = 10
+        
+        let currencyCollectionView                  = ForeignCurencyCollectionView(frame: CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80))
+        currencyCollectionView.collectionViewLayout = flowLayout
+        currencyCollectionView.backgroundColor      = UIColor.blueColor()
+        currencyCollectionView.alpha = 0.5
+        // TODO: set collectionview delegate here
+        
+        // TODO: set collectionview data
+        
+        self.addSubview(currencyCollectionView)
+        
+        let offset:CGFloat = 30
+        yLoc += currencyCollectionView.frame.size.height+offset
     }
 
 }
