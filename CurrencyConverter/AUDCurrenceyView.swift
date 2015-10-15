@@ -9,7 +9,9 @@
 import Foundation
 import UIKit
 
-class AUDCurrenceyView: UIView {
+class AUDCurrenceyView: UIView, UITextFieldDelegate {
+    
+    var yLoc:CGFloat = 50
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,12 +26,75 @@ class AUDCurrenceyView: UIView {
     
     func displayCurrencyViewElements(){
         
-        // TODO: title
-                
-        // TODO: "AUD"
+        // logo
+        let logoWidth:CGFloat  = 191
+        let logoHeight:CGFloat = 20
+        let logoXPos           = (self.frame.size.width/2)-(logoWidth/2)
         
-        // TODO: $$ textfield
+        let logoImageView   = UIImageView(image: UIImage(named: "assets/Logo.png"))
+        logoImageView.frame = CGRect(x: logoXPos, y: yLoc, width: logoWidth, height: logoHeight)
+        self.addSubview(logoImageView)
         
-        // TODO: black dotted line
+        let offset:CGFloat = 20
+        yLoc += logoHeight+offset
+        
+        // "AUD" label
+        let labelWidth:CGFloat  = 100
+        let labelHeight:CGFloat = 70
+        let labelXPos           = (self.frame.size.width/2)-(labelWidth/2)
+        
+        let audLabel                = UILabel(frame: CGRect(x: labelXPos, y: yLoc, width: labelWidth, height: labelHeight))
+        audLabel.textColor          = UIColor.whiteColor()
+        audLabel.font               = UIFont(name: "HelveticaNeue-Medium", size: 45)
+        audLabel.textAlignment      = NSTextAlignment.Center
+        
+        let audString = "aud"
+        audLabel.text = audString.uppercaseString
+        self.addSubview(audLabel)
+
+        yLoc += labelHeight
+        
+        // $$ textfield
+        let defaultAmount:Int       = 1 // set default amount to $1
+        let amountWidth:CGFloat     = self.frame.size.width-105
+        let amountHeight:CGFloat    = 50
+        let amountXLoc              = (self.frame.size.width/2)-(amountWidth/2)
+        
+        let amountTextField             = UITextField(frame:CGRect(x: amountXLoc, y: yLoc, width: amountWidth, height: amountHeight))
+        amountTextField.backgroundColor = UIColor.greenColor()
+        amountTextField.textColor       = audLabel.textColor
+        amountTextField.font            = audLabel.font
+        amountTextField.textAlignment   = audLabel.textAlignment
+        amountTextField.text            = "$ \(defaultAmount)"
+        amountTextField.becomeFirstResponder()
+        self.addSubview(amountTextField)
+        
+        yLoc += amountHeight
+        
+        // TODO: need a black dashed line, for now it's solid!
+        let path                            = UIBezierPath(rect: amountTextField.bounds)
+        amountTextField.layer.masksToBounds = false
+        amountTextField.layer.shadowColor = UIColor.blackColor().CGColor
+        amountTextField.layer.shadowOffset  = CGSize(width: 0, height: 2)
+        amountTextField.layer.shadowRadius  = 0
+        amountTextField.layer.shadowOpacity = 1
+        amountTextField.layer.shadowPath    = path.CGPath
+    }
+    
+    
+    // MARK: UITextField Delegate Methods
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+     
+        print("return textfield")
+        return true
     }
 }
