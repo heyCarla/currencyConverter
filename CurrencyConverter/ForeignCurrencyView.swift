@@ -77,7 +77,7 @@ class ForeignCurrencyView: UIView {
         flowLayout.minimumLineSpacing   = 10
 
         let currencyCollectionViewController        = ForeignCurencyCollectionViewController(collectionViewLayout: flowLayout)
-        currencyCollectionViewController.view.frame = CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80)
+//        currencyCollectionViewController.view.frame = CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80)
         self.addSubview(currencyCollectionViewController.view)
         
         let offset:CGFloat = 30

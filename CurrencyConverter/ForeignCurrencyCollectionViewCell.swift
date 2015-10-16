@@ -11,14 +11,14 @@ import UIKit
 
 class ForeignCurrencyCollectionViewCell: UICollectionViewCell {
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    func setCurrencyName(let currencyString:String){
         
-        self.backgroundColor = UIColor.redColor()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        print("currency: \(currencyString)")
+        
+        let currencyLabel           = UILabel(frame: self.bounds)
+        currencyLabel.textAlignment = NSTextAlignment.Center
+        currencyLabel.text          = String(currencyString)
+        self.addSubview(currencyLabel)
     }
     
     // TODO: get currency name and display

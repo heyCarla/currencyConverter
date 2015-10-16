@@ -18,37 +18,64 @@ class ForeignCurencyCollectionViewController: UICollectionViewController {
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
         
-        // TODO: set proper bg colour
-        self.view.backgroundColor   = UIColor.blueColor()
-        self.view.alpha             = 0.5
-        
-        collectionView?.dataSource = self
-        collectionView?.delegate   = self
+//        // TODO: set proper bg colour
+//        self.view.backgroundColor   = UIColor.blueColor()
+//        self.view.alpha             = 0.5
+//        
+//        setCollectionViewSpecs()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setCollectionViewSpecs(){
+        
+        collectionView!.contentSize                     = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
+        collectionView!.scrollEnabled                   = true
+        collectionView!.showsHorizontalScrollIndicator  = false
+        collectionView!.delegate                        = self
+        collectionView!.dataSource                      = self
+        collectionView!.registerClass(ForeignCurrencyCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+//        collectionView!.frame                           = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 80)
+        collectionView!.reloadData()
+    }
     
-    // MARK: UICollectionViewDatasource Delegate Methods
+    
+    // MARK: UICollectionViewDatasource Methods
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return foreignCurrencyArray.count
+        return 1
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return 3//foreignCurrencyArray.count
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
-        cell.backgroundColor = UIColor.blackColor()
+        let currencyCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ForeignCurrencyCollectionViewCell
         
         // TODO: configure the cell
         
-        return cell
+        let stringName = foreignCurrencyArray[indexPath.item]
+        currencyCell.setCurrencyName(stringName)
+        
+        return currencyCell
+    }
+    
+    // MARK: UICollectionViewDelegate Methods
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        
     }
 }
 
