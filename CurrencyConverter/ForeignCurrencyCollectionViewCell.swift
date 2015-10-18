@@ -10,16 +10,32 @@ import Foundation
 import UIKit
 
 class ForeignCurrencyCollectionViewCell: UICollectionViewCell {
+    
+    lazy var currencyLabel: UILabel = {
+        let label = UILabel(frame: self.bounds)
+        
+        label.textAlignment = NSTextAlignment.Center
+        label.font          = UIFont(name: "HelveticaNeue-Medium", size: 40)
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        self.addSubview(currencyLabel)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func shouldDimText(shouldDim: Bool) {
+        currencyLabel.textColor = shouldDim ? UIColor.grayColor() : UIColor.whiteColor()
+    }
 
     func setCurrencyName(let currencyString:String){
         
         print("currency: \(currencyString)")
-        
-        let currencyLabel           = UILabel(frame: self.bounds)
-        currencyLabel.textAlignment = NSTextAlignment.Center
-        currencyLabel.text          = String(currencyString)
-        self.addSubview(currencyLabel)
+        currencyLabel.text = String(currencyString)
     }
-    
-    // TODO: get currency name and display
 }

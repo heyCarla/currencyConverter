@@ -13,14 +13,33 @@ import UIKit
 //    func updateForeignCurrencyLabel(newAmount:Double)
 //}
 
-class ForeignCurrencyView: UIView {
+class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerDelegate {
     
 //    var delegate:ForeignCurrencyViewDelegate?
     var updatedAmount:Double        = 0.0
     var yLoc:CGFloat                = 20
-    let supportedCurrencies         = [:]
+    var supportedCurrencies:  [CurrencyValueModel]? {
+        didSet {
+            // set default currency/rate
+            currencyCollectionViewController.supportedForeignCurrencies(supportedCurrencies)
+        }
+    }
     var selectedForeignCurrencyRate = Double()
+    var selectedForeignCurrencyName = String()
     var convertedCurrencyLabel      = UILabel()
+    
+    lazy var flowLayout: UICollectionViewFlowLayout = {
+        let flowLayout                  = CenterPagingFlowLayout()
+        flowLayout.scrollDirection      = .Horizontal
+        flowLayout.minimumLineSpacing   = 10
+        flowLayout.minimumInteritemSpacing = 10
+        flowLayout.itemSize = CGSizeMake(100, 80)
+        return flowLayout
+    }()
+    
+    lazy var currencyCollectionViewController: ForeignCurencyCollectionViewController = {
+        return ForeignCurencyCollectionViewController(collectionViewLayout: self.flowLayout)
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,9 +51,9 @@ class ForeignCurrencyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setSupportedForeignCurrencies(currencyDict:NSDictionary){
-
-        print(currencyDict)
+    func setSupportedForeignCurrencies(currencies: [CurrencyValueModel]){
+        //print(currencyDict)
+        supportedCurrencies = currencies
     }
     
     func displayCurrencyViewElements(){
@@ -65,9 +84,11 @@ class ForeignCurrencyView: UIView {
         // up arrow
         let upArrowImageView  = UIImageView(image: UIImage(named: "assets/Indicator_2.png"))
         let upArrowYPos       = yLoc-(arrowHeight/2.5)
-        upArrowImageView.backgroundColor = UIColor.yellowColor()
         upArrowImageView.frame = CGRect(x: arrowXPos, y: upArrowYPos, width: arrowWidth, height: arrowHeight)
         self.addSubview(upArrowImageView)
+        
+        let offset:CGFloat = 30
+        yLoc += offset
         
         // converted foreign currency label
         let convertedLabelWidth:CGFloat     = self.frame.size.width-100
@@ -80,33 +101,31 @@ class ForeignCurrencyView: UIView {
         convertedCurrencyLabel.textAlignment    = NSTextAlignment.Center
         self.addSubview(convertedCurrencyLabel)
         
-        // TODO: set dynamic text
         convertedCurrencyLabel.text = "$ \(updatedAmount)"
     }
     
     func createCollectionView(){
+
+        currencyCollectionViewController.view.frame = CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80)
+        currencyCollectionViewController.delegate   = self
+        self.addSubview(currencyCollectionViewController.view)
         
-        let view = UIView(frame: CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80))
-        view.backgroundColor = UIColor.yellowColor()
-        self.addSubview(view)
-        
-//        let flowLayout                  = UICollectionViewFlowLayout()
-//        flowLayout.scrollDirection      = UICollectionViewScrollDirection.Horizontal
-//        flowLayout.minimumLineSpacing   = 10
-//
-//        let currencyCollectionViewController        = ForeignCurencyCollectionViewController(collectionViewLayout: flowLayout)
-////        currencyCollectionViewController.view.frame = CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80)
-//        self.addSubview(currencyCollectionViewController.view)
-//        
-//        let offset:CGFloat = 30
-//        yLoc += currencyCollectionViewController.view.frame.size.height+offset
-        
-        // TODO: THIS.
-        // set default currency
-        selectedForeignCurrencyRate = 0.9381
+        yLoc += currencyCollectionViewController.view.frame.size.height
     }
     
     func updateForeignCurrencyLabel(updatedAmount:Double){
+        
+        // TODO: check for foreign currency $ symbols and append
         convertedCurrencyLabel.text = "\(updatedAmount)"
+    }
+    
+    
+    // MARK: ForeignCurencyCollectionViewControllerDelegate Methods
+
+    func handleFlyerSelectionFromIndexPath(index:Int){
+        
+        print("cell path: \(index)")
+        // TODO: set currency/rate to use in conversion
+        
     }
 }

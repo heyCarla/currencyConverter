@@ -9,40 +9,85 @@
 import Foundation
 import UIKit
 
+protocol ForeignCurencyCollectionViewControllerDelegate: class {
+    func handleFlyerSelectionFromIndexPath(index:Int)
+}
+
 class ForeignCurencyCollectionViewController: UICollectionViewController {
     
-    let foreignCurrencyArray    = ["CAD", "EUR", "GBP", "JPY", "USD"]
+    weak var delegate:ForeignCurencyCollectionViewControllerDelegate?
+    private var supportedCurrencies: [CurrencyValueModel]?
     private let reuseIdentifier = "CurrencyCell"
-    private let sectionInsets   = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
+    private var selectedIndexPath: NSIndexPath?
+    private var currentSelectedCurrency: String?
 
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
         
-//        // TODO: set proper bg colour
-//        self.view.backgroundColor   = UIColor.blueColor()
-//        self.view.alpha             = 0.5
-//        
-//        setCollectionViewSpecs()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setCollectionViewSpecs(){
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        collectionView!.contentSize                     = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
-        collectionView!.scrollEnabled                   = true
-        collectionView!.showsHorizontalScrollIndicator  = false
-        collectionView!.delegate                        = self
-        collectionView!.dataSource                      = self
+        self.collectionView!.backgroundColor = UIColor.cyanColor()
+        
+        displayCollectionViewElements()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.updateDimming()
+    }
+    
+    func supportedForeignCurrencies(currencies: [CurrencyValueModel]?){
+        
+        supportedCurrencies = currencies
+        self.collectionView!.reloadData()
+        self.updateDimming()
+    }
+    
+    func displayCollectionViewElements(){
+
+        collectionView!.showsHorizontalScrollIndicator = false
         collectionView!.registerClass(ForeignCurrencyCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-//        collectionView!.frame                           = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 80)
-        collectionView!.reloadData()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        self.resetInsetsForCenterPaging()
+    }
+    
+    private func resetInsetsForCenterPaging() {
+        var insets = self.collectionView!.contentInset
+        let widthWithOffset = (self.view.frame.size.width - (self.collectionView!.collectionViewLayout as! UICollectionViewFlowLayout).itemSize.width) * 0.5
+        insets.left = widthWithOffset
+        insets.right = widthWithOffset
+        self.collectionView!.contentInset = insets
+        self.collectionView!.decelerationRate = UIScrollViewDecelerationRateFast
+    }
+    
+    private func updateDimming() {
+        
+        let visibleIndexPaths = self.collectionView!.indexPathsForVisibleItems()
+        
+        for indexPath in visibleIndexPaths {
+            let attributes = self.collectionView!.layoutAttributesForItemAtIndexPath(indexPath)
+            let cellFrameInSuperview = self.collectionView!.convertRect(attributes!.frame, toView: self.collectionView!.superview!)
+            let cell = self.collectionView!.cellForItemAtIndexPath(indexPath) as! ForeignCurrencyCollectionViewCell
+            
+            let cellIsCenter = CGRectContainsPoint(cellFrameInSuperview, self.view.center)
+            if cellIsCenter {
+                selectedIndexPath = indexPath
+                delegate!.handleFlyerSelectionFromIndexPath(indexPath.item)
+            }
+            cell.shouldDimText(!cellIsCenter)
+        }
     }
     
     
@@ -52,21 +97,31 @@ class ForeignCurencyCollectionViewController: UICollectionViewController {
         return 1
     }
     
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        self.collectionView!.visibleCells()
+    
+        self.updateDimming()
+    }
+
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3//foreignCurrencyArray.count
+        return supportedCurrencies?.count ?? 0
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let currencyCell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ForeignCurrencyCollectionViewCell
         
-        // TODO: configure the cell
+        let currencyModel = self.supportedCurrencies![indexPath.item]
+        currencyCell.setCurrencyName(currencyModel.currencyCode)
+        currencyCell.shouldDimText(selectedIndexPath != nil)
         
-        let stringName = foreignCurrencyArray[indexPath.item]
-        currencyCell.setCurrencyName(stringName)
+        if selectedIndexPath == nil {
+            selectedIndexPath = indexPath
+        }
         
         return currencyCell
     }
+    
     
     // MARK: UICollectionViewDelegate Methods
     
@@ -82,10 +137,10 @@ class ForeignCurencyCollectionViewController: UICollectionViewController {
 extension ForeignCurencyCollectionViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-            return CGSize(width: 100, height: 100)
+            return CGSize(width: 100, height: self.view.frame.size.height)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-            return sectionInsets
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
 }
