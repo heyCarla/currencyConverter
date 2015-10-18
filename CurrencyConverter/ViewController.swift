@@ -67,8 +67,8 @@ class ViewController: UIViewController, NSURLConnectionDelegate {
                 
                 do {
                     let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
-                    //print("json = \(json)")
-                    
+
+                    // add only the supported currencies and their respective values to currencyDict
                     let supportedCurrencies = ["CAD", "EUR", "GBP", "JPY", "USD"]
                     
                     if let rates = json["rates"] as? NSDictionary {
