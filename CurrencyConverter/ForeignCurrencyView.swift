@@ -9,9 +9,16 @@
 import Foundation
 import UIKit
 
+//protocol ForeignCurrencyViewDelegate {
+//    func updateForeignCurrencyLabel(newAmount:Double)
+//}
+
 class ForeignCurrencyView: UIView {
     
-    var yLoc:CGFloat = 20
+//    var delegate:ForeignCurrencyViewDelegate?
+    var updatedAmount:Double    = 0.0
+    var yLoc:CGFloat            = 20
+    var convertedCurrencyLabel  = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,27 +67,35 @@ class ForeignCurrencyView: UIView {
         let convertedLabelHeight:CGFloat    = 70
         let labelXPos                       = (self.frame.size.width/2)-(convertedLabelWidth/2)
         
-        let convertedCurrencyLabel              = UILabel(frame: CGRect(x: labelXPos, y: yLoc, width: convertedLabelWidth, height: convertedLabelHeight))
+        convertedCurrencyLabel                  = UILabel(frame: CGRect(x: labelXPos, y: yLoc, width: convertedLabelWidth, height: convertedLabelHeight))
         convertedCurrencyLabel.textColor        = UIColor.whiteColor()
         convertedCurrencyLabel.font             = UIFont(name: "HelveticaNeue-Medium", size: 45)
         convertedCurrencyLabel.textAlignment    = NSTextAlignment.Center
         self.addSubview(convertedCurrencyLabel)
         
         // TODO: set dynamic text
-        convertedCurrencyLabel.text = "$888888888"
+        convertedCurrencyLabel.text = "$ \(updatedAmount)"
     }
     
     func createCollectionView(){
         
-        let flowLayout                  = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection      = UICollectionViewScrollDirection.Horizontal
-        flowLayout.minimumLineSpacing   = 10
-
-        let currencyCollectionViewController        = ForeignCurencyCollectionViewController(collectionViewLayout: flowLayout)
-//        currencyCollectionViewController.view.frame = CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80)
-        self.addSubview(currencyCollectionViewController.view)
+        let view = UIView(frame: CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80))
+        view.backgroundColor = UIColor.yellowColor()
+        self.addSubview(view)
         
-        let offset:CGFloat = 30
-        yLoc += currencyCollectionViewController.view.frame.size.height+offset
+//        let flowLayout                  = UICollectionViewFlowLayout()
+//        flowLayout.scrollDirection      = UICollectionViewScrollDirection.Horizontal
+//        flowLayout.minimumLineSpacing   = 10
+//
+//        let currencyCollectionViewController        = ForeignCurencyCollectionViewController(collectionViewLayout: flowLayout)
+////        currencyCollectionViewController.view.frame = CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80)
+//        self.addSubview(currencyCollectionViewController.view)
+//        
+//        let offset:CGFloat = 30
+//        yLoc += currencyCollectionViewController.view.frame.size.height+offset
+    }
+    
+    func updateForeignCurrencyLabel(updatedAmount:Double){
+        convertedCurrencyLabel.text = "\(updatedAmount)"
     }
 }

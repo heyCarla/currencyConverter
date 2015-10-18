@@ -9,10 +9,16 @@
 import Foundation
 import UIKit
 
+protocol AUDCurrencyViewDelegate {
+    func calculateAmountUsingForeignRate(localAmount:String)
+}
+
 class AUDCurrenceyView: UIView, UITextFieldDelegate {
     
-    var yLoc:CGFloat = 50
-    
+    var delegate:AUDCurrencyViewDelegate?
+    var yLoc:CGFloat            = 50
+    var updatedForeignAmount    = 0.0
+  
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -22,8 +28,6 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    func get
     
     func displayCurrencyViewElements(){
         
@@ -99,7 +103,7 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
      
-        applyExchangeRateToCurrentAmount(textField.text!)
+        delegate?.calculateAmountUsingForeignRate(textField.text!)
         return true
     }
     
@@ -110,17 +114,5 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
         
         let currentAmount = Double(inputAmount)
         print(currentAmount)
-        
-        // TODO: get currently selected foreign currency
-        // for now assume it is CAD
-        let selectedForeignCurrency = "CAD"
-        let selectedCurrencyRate    = 0.9381
-
-        // calculate rate in the selected currency
-        let convertedAmount = currentAmount! * selectedCurrencyRate
-        print(convertedAmount)
-        
-        // TODO: update the total amount in ForeignCurrencyView
-        
     }
 }

@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController, NSURLConnectionDelegate {
+class ViewController: UIViewController, NSURLConnectionDelegate, AUDCurrencyViewDelegate {
     
     var currencyDict = [:]
+    var foreignCurrencyView:ForeignCurrencyView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +21,7 @@ class ViewController: UIViewController, NSURLConnectionDelegate {
         self.view.backgroundColor = UIColor.greenColor()
 
         getExternalCurrencyData()
-        setCashConverterViewLayout()
+        setCurrencyConverterViewLayout()
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,7 +29,7 @@ class ViewController: UIViewController, NSURLConnectionDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func setCashConverterViewLayout(){
+    func setCurrencyConverterViewLayout(){
         
         let xLoc:CGFloat        = 0
         var yLoc:CGFloat        = xLoc
@@ -36,13 +37,14 @@ class ViewController: UIViewController, NSURLConnectionDelegate {
         let viewHeight:CGFloat  = self.view.frame.size.height/2
         
         // AUD currency view
-        let audCurrenceyView = AUDCurrenceyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
+        let audCurrenceyView        = AUDCurrenceyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
+        audCurrenceyView.delegate   = self
         self.view.addSubview(audCurrenceyView)
         
         yLoc += viewHeight
         
         // Foreign currency view
-        let foreignCurrencyView = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
+        foreignCurrencyView = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
         self.view.addSubview(foreignCurrencyView)
     }
 
@@ -96,6 +98,29 @@ class ViewController: UIViewController, NSURLConnectionDelegate {
         });
         
         task.resume()
+    }
+
+    
+    
+    func currentSelectedForeignCurrency() ->Double{
+        
+        // TODO: this!
+        // start with CAD as it's the first item in the dict
+        
+        return currencyDict["CAD"] as! Double
+    }
+    
+    
+    // MARK: AUDCurrencyViewDelegate Methods
+    
+    func calculateAmountUsingForeignRate(localAmount:String) {
+        
+        // calculate rate in the selected currency and display the new amount in ForeignCurrencyView
+        let currentAmount   = Double(localAmount)
+        let convertedAmount = currentAmount! * currentSelectedForeignCurrency()
+        print(convertedAmount)
+        
+        foreignCurrencyView.updateForeignCurrencyLabel(convertedAmount)
     }
 }
 
