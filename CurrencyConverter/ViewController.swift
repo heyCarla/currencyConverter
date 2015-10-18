@@ -67,6 +67,8 @@ class ViewController: UIViewController, NSURLConnectionDelegate {
                 print("no error :)")
                 
                 var result = NSString(data: data!, encoding: NSASCIIStringEncoding)!
+                print("data: \(result)")
+                
                 //callback(result, nil)
             }
 
