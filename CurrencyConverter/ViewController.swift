@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, NSURLConnectionDelegate {
+    
+    var currencyData = NSMutableData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,6 +19,7 @@ class ViewController: UIViewController {
         // TODO: set actual bg colour, for now use default fugly green
         self.view.backgroundColor = UIColor.greenColor()
 
+        getExternalCurrencyData()
         setCashConverterViewLayout()
     }
     
@@ -42,5 +45,40 @@ class ViewController: UIViewController {
         let foreignCurrencyView = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
         self.view.addSubview(foreignCurrencyView)
     }
+
+    
+    // MARK: Fetch Fixer.io data
+    
+    func getExternalCurrencyData(){
+        
+        // TODO: make GET request
+        let url:NSURL!              = NSURL(string: "http://api.fixer.io/latest")
+        let request:NSURLRequest    = NSURLRequest(URL: url)
+        let config                  = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session                 = NSURLSession(configuration: config)
+        
+        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request, completionHandler: {(data, response, error) in
+            
+            if error != nil {
+                print("there was an error!")
+            
+            } else {
+                
+                print("no error :)")
+                
+                var result = NSString(data: data!, encoding: NSASCIIStringEncoding)!
+                //callback(result, nil)
+            }
+
+            
+        });
+        
+        task.resume()
+    }
+    
+    func saveCurrentCurrencyData(data:NSData){
+        
+    }
+    
 }
 
