@@ -17,7 +17,7 @@ build/*
 *.pbxuser
 *.xcworkspace
 *.xcuserstate
-xcuserdata
+*.xcuserdata
 /*.xcuserstate
 
 *.pbxproj
