@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController, NSURLConnectionDelegate {
     
-    var currencyData = NSMutableData()
+    var currencyDict = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +51,7 @@ class ViewController: UIViewController, NSURLConnectionDelegate {
     
     func getExternalCurrencyData(){
         
-        // TODO: make GET request
-        let url:NSURL!              = NSURL(string: "http://api.fixer.io/latest")
+        let url:NSURL!              = NSURL(string: "http://api.fixer.io/latest?base=AUD")
         let request:NSURLRequest    = NSURLRequest(URL: url)
         let config                  = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session                 = NSURLSession(configuration: config)
@@ -60,27 +59,43 @@ class ViewController: UIViewController, NSURLConnectionDelegate {
         let task : NSURLSessionDataTask = session.dataTaskWithRequest(request, completionHandler: {(data, response, error) in
             
             if error != nil {
-                print("there was an error!")
+                print("In the unlikely event that there is an error, handle it here. :)")
             
             } else {
                 
-                print("no error :)")
+                print("No errors here. Carry on.")
                 
-                var result = NSString(data: data!, encoding: NSASCIIStringEncoding)!
-                print("data: \(result)")
-                
-                //callback(result, nil)
-            }
+                do {
+                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
+                    //print("json = \(json)")
+                    
+                    let supportedCurrencies = ["CAD", "EUR", "GBP", "JPY", "USD"]
+                    
+                    if let rates = json["rates"] as? NSDictionary {
+                        
+                        let supportedCurrencyValues = supportedCurrencies.flatMap {
+                            return rates[$0] as? Double
+                        }
+                        
+                        //print(supportedCurrencyValues)
+                        
+                        var supportedCurrencyDict: [String: Double] = [:]
+                        
+                        for (key, value) in supportedCurrencies.enumerate() {
+                            supportedCurrencyDict[value] = supportedCurrencyValues[key]
+                        }
+                        
+                        self.currencyDict = supportedCurrencyDict
+                        print(self.currencyDict)
+                    }
 
-            
+                } catch {
+                    print("error serializing JSON: \(error)")
+                }
+            }
         });
         
         task.resume()
     }
-    
-    func saveCurrentCurrencyData(data:NSData){
-        
-    }
-    
 }
 

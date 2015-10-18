@@ -66,7 +66,7 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
         amountTextField.font            = audLabel.font
         amountTextField.textAlignment   = audLabel.textAlignment
         amountTextField.text            = "$ \(defaultAmount)"
-        amountTextField.becomeFirstResponder()
+//        amountTextField.becomeFirstResponder()
         self.addSubview(amountTextField)
         
         yLoc += amountHeight
