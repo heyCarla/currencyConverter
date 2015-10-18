@@ -16,9 +16,11 @@ import UIKit
 class ForeignCurrencyView: UIView {
     
 //    var delegate:ForeignCurrencyViewDelegate?
-    var updatedAmount:Double    = 0.0
-    var yLoc:CGFloat            = 20
-    var convertedCurrencyLabel  = UILabel()
+    var updatedAmount:Double        = 0.0
+    var yLoc:CGFloat                = 20
+    let supportedCurrencies         = [:]
+    var selectedForeignCurrencyRate = Double()
+    var convertedCurrencyLabel      = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,6 +30,11 @@ class ForeignCurrencyView: UIView {
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setSupportedForeignCurrencies(currencyDict:NSDictionary){
+
+        print(currencyDict)
     }
     
     func displayCurrencyViewElements(){
@@ -93,6 +100,10 @@ class ForeignCurrencyView: UIView {
 //        
 //        let offset:CGFloat = 30
 //        yLoc += currencyCollectionViewController.view.frame.size.height+offset
+        
+        // TODO: THIS.
+        // set default currency
+        selectedForeignCurrencyRate = 0.9381
     }
     
     func updateForeignCurrencyLabel(updatedAmount:Double){

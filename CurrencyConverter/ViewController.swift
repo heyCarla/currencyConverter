@@ -46,6 +46,11 @@ class ViewController: UIViewController, NSURLConnectionDelegate, AUDCurrencyView
         // Foreign currency view
         foreignCurrencyView = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
         self.view.addSubview(foreignCurrencyView)
+        foreignCurrencyView.setSupportedForeignCurrencies(self.currencyDict)
+    }
+
+    func currentSelectedForeignCurrency() ->Double{
+        return foreignCurrencyView.selectedForeignCurrencyRate
     }
 
     
@@ -88,7 +93,7 @@ class ViewController: UIViewController, NSURLConnectionDelegate, AUDCurrencyView
                         }
                         
                         self.currencyDict = supportedCurrencyDict
-                        print(self.currencyDict)
+                        //print(self.currencyDict)
                     }
 
                 } catch {
@@ -100,16 +105,6 @@ class ViewController: UIViewController, NSURLConnectionDelegate, AUDCurrencyView
         task.resume()
     }
 
-    
-    
-    func currentSelectedForeignCurrency() ->Double{
-        
-        // TODO: this!
-        // start with CAD as it's the first item in the dict
-        
-        return currencyDict["CAD"] as! Double
-    }
-    
     
     // MARK: AUDCurrencyViewDelegate Methods
     
