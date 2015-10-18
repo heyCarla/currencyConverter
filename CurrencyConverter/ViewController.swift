@@ -10,8 +10,9 @@ import UIKit
 
 class ViewController: UIViewController, NSURLConnectionDelegate, AUDCurrencyViewDelegate {
     
-    var currencyDict = [:]
-    var foreignCurrencyView:ForeignCurrencyView!
+    var currencyDict = [String: Double]()
+    var foreignCurrencyView: ForeignCurrencyView!
+    private let dataController = CashConverterDataController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,8 +21,11 @@ class ViewController: UIViewController, NSURLConnectionDelegate, AUDCurrencyView
         // TODO: set actual bg colour, for now use default fugly green
         self.view.backgroundColor = UIColor.greenColor()
 
-        getExternalCurrencyData()
         setCurrencyConverterViewLayout()
+        
+        dataController.getExternalCurrencyData { models in
+            self.foreignCurrencyView.setSupportedForeignCurrencies(models)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -46,7 +50,7 @@ class ViewController: UIViewController, NSURLConnectionDelegate, AUDCurrencyView
         // Foreign currency view
         foreignCurrencyView = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
         self.view.addSubview(foreignCurrencyView)
-        foreignCurrencyView.setSupportedForeignCurrencies(self.currencyDict)
+
     }
 
     func currentSelectedForeignCurrency() ->Double{
@@ -54,56 +58,56 @@ class ViewController: UIViewController, NSURLConnectionDelegate, AUDCurrencyView
     }
 
     
-    // MARK: Fetch Fixer.io data
-    
-    func getExternalCurrencyData(){
-        
-        let url:NSURL!              = NSURL(string: "http://api.fixer.io/latest?base=AUD")
-        let request:NSURLRequest    = NSURLRequest(URL: url)
-        let config                  = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let session                 = NSURLSession(configuration: config)
-        
-        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request, completionHandler: {(data, response, error) in
-            
-            if error != nil {
-                print("In the unlikely event that there is an error, handle it here. :)")
-            
-            } else {
-                
-                print("No errors here. Carry on.")
-                
-                do {
-                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
-
-                    // add only the supported currencies and their respective values to currencyDict
-                    let supportedCurrencies = ["CAD", "EUR", "GBP", "JPY", "USD"]
-                    
-                    if let rates = json["rates"] as? NSDictionary {
-                        
-                        let supportedCurrencyValues = supportedCurrencies.flatMap {
-                            return rates[$0] as? Double
-                        }
-                        
-                        //print(supportedCurrencyValues)
-                        
-                        var supportedCurrencyDict: [String: Double] = [:]
-                        
-                        for (key, value) in supportedCurrencies.enumerate() {
-                            supportedCurrencyDict[value] = supportedCurrencyValues[key]
-                        }
-                        
-                        self.currencyDict = supportedCurrencyDict
-                        //print(self.currencyDict)
-                    }
-
-                } catch {
-                    print("error serializing JSON: \(error)")
-                }
-            }
-        });
-        
-        task.resume()
-    }
+//    // MARK: Fetch Fixer.io data
+//    
+//    func getExternalCurrencyData(){
+//        
+//        let url:NSURL!              = NSURL(string: "http://api.fixer.io/latest?base=AUD")
+//        let request:NSURLRequest    = NSURLRequest(URL: url)
+//        let config                  = NSURLSessionConfiguration.defaultSessionConfiguration()
+//        let session                 = NSURLSession(configuration: config)
+//        
+//        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request, completionHandler: {(data, response, error) in
+//            
+//            if error != nil {
+//                print("In the unlikely event that there is an error, handle it here. :)")
+//            
+//            } else {
+//                
+//                print("No errors here. Carry on.")
+//                
+//                do {
+//                    let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers)
+//
+//                    // add only the supported currencies and their respective values to currencyDict
+//                    let supportedCurrencies = ["CAD", "EUR", "GBP", "JPY", "USD"]
+//                    
+//                    if let rates = json["rates"] as? NSDictionary {
+//                        
+//                        let supportedCurrencyValues = supportedCurrencies.flatMap {
+//                            return rates[$0] as? Double
+//                        }
+//                        
+//                        //print(supportedCurrencyValues)
+//                        
+//                        var supportedCurrencyDict: [String: Double] = [:]
+//                        
+//                        for (key, value) in supportedCurrencies.enumerate() {
+//                            supportedCurrencyDict[value] = supportedCurrencyValues[key]
+//                        }
+//                        
+//                        self.currencyDict = supportedCurrencyDict
+//                        //print(self.currencyDict)
+//                    }
+//
+//                } catch {
+//                    print("error serializing JSON: \(error)")
+//                }
+//            }
+//        });
+//        
+//        task.resume()
+//    }
 
     
     // MARK: AUDCurrencyViewDelegate Methods

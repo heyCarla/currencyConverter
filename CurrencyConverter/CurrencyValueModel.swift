@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CashConverterModel: NSObject {
-    
-    // TODO: fetch JSON and parse here
+struct CurrencyValueModel {
+    let currencyCode: String
+    let currentValue: Double
 }
