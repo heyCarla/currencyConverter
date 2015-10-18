@@ -23,6 +23,7 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+//    func get
     
     func displayCurrencyViewElements(){
         
@@ -55,17 +56,21 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
         yLoc += labelHeight
         
         // $$ textfield
-        let defaultAmount:Int       = 1 // set default amount to $1
+        let defaultAmount           = "1.00" // set default amount to $1
         let amountWidth:CGFloat     = self.frame.size.width-105
         let amountHeight:CGFloat    = 50
         let amountXLoc              = (self.frame.size.width/2)-(amountWidth/2)
         
         let amountTextField             = UITextField(frame:CGRect(x: amountXLoc, y: yLoc, width: amountWidth, height: amountHeight))
+        amountTextField.delegate        = self
         amountTextField.backgroundColor = UIColor.greenColor()
         amountTextField.textColor       = audLabel.textColor
         amountTextField.font            = audLabel.font
         amountTextField.textAlignment   = audLabel.textAlignment
-        amountTextField.text            = "$ \(defaultAmount)"
+        
+        // TODO: prepend "$" to total
+        
+        amountTextField.text            = String(defaultAmount) //"$ \(defaultAmount)"
 //        amountTextField.becomeFirstResponder()
         self.addSubview(amountTextField)
         
@@ -94,7 +99,28 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
      
-        print("return textfield")
+        applyExchangeRateToCurrentAmount(textField.text!)
         return true
+    }
+    
+    
+    // MARK: Utilities
+    
+    func applyExchangeRateToCurrentAmount(inputAmount:String){
+        
+        let currentAmount = Double(inputAmount)
+        print(currentAmount)
+        
+        // TODO: get currently selected foreign currency
+        // for now assume it is CAD
+        let selectedForeignCurrency = "CAD"
+        let selectedCurrencyRate    = 0.9381
+
+        // calculate rate in the selected currency
+        let convertedAmount = currentAmount! * selectedCurrencyRate
+        print(convertedAmount)
+        
+        // TODO: update the total amount in ForeignCurrencyView
+        
     }
 }
