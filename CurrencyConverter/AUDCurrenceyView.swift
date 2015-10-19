@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-protocol AUDCurrencyViewDelegate {
+protocol AUDCurrencyViewDelegate: class {
     func calculateAmountUsingForeignRate(localAmount:String)
 }
 
-class AUDCurrenceyView: UIView, UITextFieldDelegate {
+final class AUDCurrenceyView: UIView, UITextFieldDelegate {
     
-    var delegate:AUDCurrencyViewDelegate?
+    weak var delegate:AUDCurrencyViewDelegate?
     var yLoc:CGFloat            = 50
     var updatedForeignAmount    = 0.0
   
@@ -71,11 +71,9 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
         amountTextField.textColor       = audLabel.textColor
         amountTextField.font            = audLabel.font
         amountTextField.textAlignment   = audLabel.textAlignment
+        amountTextField.keyboardType    = UIKeyboardType.DecimalPad
         
-        // TODO: prepend "$" to total
-        
-        amountTextField.text            = String(defaultAmount) //"$ \(defaultAmount)"
-//        amountTextField.becomeFirstResponder()
+        amountTextField.text            = "$ \(defaultAmount)"
         self.addSubview(amountTextField)
         
         yLoc += amountHeight
@@ -95,16 +93,30 @@ class AUDCurrenceyView: UIView, UITextFieldDelegate {
     
     func textFieldDidBeginEditing(textField: UITextField) {
         
+        // clear the textfield
+        textField.text = ""
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
         
+        // set textfield with currency style
+        let formatter           = NSNumberFormatter()
+        formatter.numberStyle   = NSNumberFormatterStyle.CurrencyStyle
+        formatter.locale        = NSLocale(localeIdentifier: "en_US")
+        let numberFromTextfield = NSString(string: textField.text!).doubleValue
+        
+        textField.text = formatter.stringFromNumber(numberFromTextfield)
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
      
-        delegate?.calculateAmountUsingForeignRate(textField.text!)
-        return true
+        // remove all characters that aren't numbers for calculation
+        let numbersOnlyString = textField.text!.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+        delegate?.calculateAmountUsingForeignRate(numbersOnlyString)
+        
+        self.endEditing(true)
+        
+        return false
     }
     
     

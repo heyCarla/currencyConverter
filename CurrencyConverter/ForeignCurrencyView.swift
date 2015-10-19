@@ -129,7 +129,13 @@ class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerDelegat
             currencySymbol = "$"
         }
         
-        convertedCurrencyLabel.text = "\(currencySymbol)\(updatedAmount)"
+        // convert character format to currency style
+        let formatter           = NSNumberFormatter()
+        formatter.numberStyle   = NSNumberFormatterStyle.CurrencyStyle
+        formatter.locale        = NSLocale(localeIdentifier: "en_US")
+        let currencyString      = formatter.stringFromNumber(updatedAmount)
+//        let currencyString      = String(original.characters.dropFirst())
+        convertedCurrencyLabel.text = "\(currencySymbol)\(String(currencyString!.characters.dropFirst()))"
     }
     
     
