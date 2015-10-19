@@ -115,17 +115,33 @@ class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerDelegat
     
     func updateForeignCurrencyLabel(updatedAmount:Double){
         
-        // TODO: check for foreign currency $ symbols and append
-        convertedCurrencyLabel.text = "\(updatedAmount)"
+        // check for foreign currency $ symbols and append
+        var currencySymbol = "$" // use dollar sign as default
+        
+        switch selectedForeignCurrencyName {
+        case "EUR":
+            currencySymbol = "€"
+        case "GBP":
+            currencySymbol = "£"
+        case "JPY":
+            currencySymbol = "¥"
+        default:
+            currencySymbol = "$"
+        }
+        
+        convertedCurrencyLabel.text = "\(currencySymbol)\(updatedAmount)"
     }
     
     
     // MARK: ForeignCurencyCollectionViewControllerDelegate Methods
 
     func handleFlyerSelectionFromIndexPath(index:Int){
+
+        //print("cell path: \(index)")
         
-        print("cell path: \(index)")
-        // TODO: set currency/rate to use in conversion
-        
+        // set currency/rate to use in conversion
+        let currencyModel           = self.supportedCurrencies![index]
+        selectedForeignCurrencyRate = currencyModel.currentValue
+        selectedForeignCurrencyName = currencyModel.currencyCode
     }
 }
