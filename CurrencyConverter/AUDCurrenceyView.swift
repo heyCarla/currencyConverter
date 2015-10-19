@@ -67,7 +67,7 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         
         let amountTextField             = UITextField(frame:CGRect(x: amountXLoc, y: yLoc, width: amountWidth, height: amountHeight))
         amountTextField.delegate        = self
-        amountTextField.backgroundColor = UIColor.greenColor()
+//        amountTextField.backgroundColor = UIColor.greenColor()
         amountTextField.textColor       = audLabel.textColor
         amountTextField.font            = audLabel.font
         amountTextField.textAlignment   = audLabel.textAlignment
@@ -78,14 +78,8 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         
         yLoc += amountHeight
         
-        // TODO: need a black dashed line, for now it's solid!
-        let path                            = UIBezierPath(rect: amountTextField.bounds)
-        amountTextField.layer.masksToBounds = false
-        amountTextField.layer.shadowColor = UIColor.blackColor().CGColor
-        amountTextField.layer.shadowOffset  = CGSize(width: 0, height: 2)
-        amountTextField.layer.shadowRadius  = 0
-        amountTextField.layer.shadowOpacity = 1
-        amountTextField.layer.shadowPath    = path.CGPath
+        // add dashed border below the textfield
+        addDashedBorderToTextField(amountTextField)
     }
     
     
@@ -126,5 +120,25 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         
         let currentAmount = Double(inputAmount)
         print(currentAmount)
+    }
+    
+    func addDashedBorderToTextField(textField:UITextField) {
+        
+        let color = UIColor.blackColor().CGColor
+        
+        let shapeLayer:CAShapeLayer = CAShapeLayer()
+        let frameSize = textField.bounds
+        let shapeRect = CGRect(x: 0, y: 0, width: frameSize.width, height: 2)
+        
+        shapeLayer.bounds           = shapeRect
+        shapeLayer.position         = CGPoint(x: frameSize.width/2, y: frameSize.height)
+        shapeLayer.fillColor        = UIColor.clearColor().CGColor
+        shapeLayer.strokeColor      = color
+        shapeLayer.lineWidth        = 2
+        shapeLayer.lineJoin         = kCALineJoinRound
+        shapeLayer.lineDashPattern  = [6,3]
+        shapeLayer.path             = UIBezierPath(roundedRect: shapeRect, cornerRadius: 5).CGPath
+        
+        textField.layer.addSublayer(shapeLayer)
     }
 }

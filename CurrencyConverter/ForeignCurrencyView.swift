@@ -62,8 +62,7 @@ class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerDelegat
         
         // border
         let viewBorder              = UIView(frame: CGRect(x: 0, y: yLoc, width: viewWidth, height: 2))
-        viewBorder.backgroundColor  = UIColor.grayColor()
-        viewBorder.alpha            = 0.5
+        viewBorder.backgroundColor  = UIColor(red: 51/255, green: 146/255, blue: 76/255, alpha: 1)
         self.addSubview(viewBorder)
         
         yLoc += viewBorder.frame.size.height

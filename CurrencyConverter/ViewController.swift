@@ -18,9 +18,7 @@ final class ViewController: UIViewController, AUDCurrencyViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        // TODO: set actual bg colour, for now use default fugly green
-        self.view.backgroundColor = UIColor.greenColor()
-
+        self.view.backgroundColor = UIColor(red: 65/255, green: 200/255, blue: 98/255, alpha: 1)
         setCurrencyConverterViewLayout()
         
         dataController.getExternalCurrencyData { models in

@@ -33,8 +33,7 @@ class ForeignCurencyCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.collectionView!.backgroundColor = UIColor.cyanColor()
-        
+        self.collectionView!.backgroundColor = UIColor(red: 62/255, green: 183/255, blue: 93/255, alpha: 1)
         displayCollectionViewElements()
     }
     

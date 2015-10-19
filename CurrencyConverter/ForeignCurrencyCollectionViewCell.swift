@@ -30,7 +30,7 @@ class ForeignCurrencyCollectionViewCell: UICollectionViewCell {
     }
     
     func shouldDimText(shouldDim: Bool) {
-        currencyLabel.textColor = shouldDim ? UIColor.grayColor() : UIColor.whiteColor()
+        currencyLabel.textColor = shouldDim ? UIColor(red: 65/255, green: 200/255, blue: 98/255, alpha: 1) : UIColor.whiteColor()
     }
 
     func setCurrencyName(let currencyString:String){
