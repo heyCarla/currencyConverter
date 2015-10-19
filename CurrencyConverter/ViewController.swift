@@ -8,9 +8,10 @@
 
 import UIKit
 
-final class ViewController: UIViewController, AUDCurrencyViewDelegate {
+final class ViewController: UIViewController, AUDCurrencyViewDelegate, ForeignCurrencyViewDelegate {
     
-    var currencyDict = [String: Double]()
+    var currencyDict    = [String: Double]()
+    var audCurrenceyView: AUDCurrenceyView!
     var foreignCurrencyView: ForeignCurrencyView!
     private let dataController = CashConverterDataController()
     
@@ -34,14 +35,15 @@ final class ViewController: UIViewController, AUDCurrencyViewDelegate {
         let viewHeight:CGFloat  = self.view.frame.size.height/2
         
         // AUD currency view
-        let audCurrenceyView        = AUDCurrenceyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
+        audCurrenceyView            = AUDCurrenceyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
         audCurrenceyView.delegate   = self
         self.view.addSubview(audCurrenceyView)
         
         yLoc += viewHeight
         
         // Foreign currency view
-        foreignCurrencyView = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
+        foreignCurrencyView             = ForeignCurrencyView(frame: CGRect(x: xLoc, y: yLoc, width: viewWidth, height: viewHeight))
+        foreignCurrencyView.delegate    = self
         self.view.addSubview(foreignCurrencyView)
     }
 
@@ -52,6 +54,10 @@ final class ViewController: UIViewController, AUDCurrencyViewDelegate {
     
     // MARK: AUDCurrencyViewDelegate Methods
     
+//    func savedLocalInputAmount(inputAmount: String) {
+//        audCurrenceyView.getCurrentLocalAmount()
+//    }
+    
     func calculateAmountUsingForeignRate(localAmount:String) {
         
         // calculate rate in the selected currency and display the new amount in ForeignCurrencyView
@@ -60,6 +66,15 @@ final class ViewController: UIViewController, AUDCurrencyViewDelegate {
         print(convertedAmount)
         
         foreignCurrencyView.updateForeignCurrencyLabel(convertedAmount)
+    }
+    
+    
+    // MARK: ForeignCurrencyViewDelegate Methods
+    
+    func updateForeignCurrencyLabel(newAmount: Double) {
+        
+        let localAmount = audCurrenceyView.getCurrentLocalAmountAfterEdit()
+        calculateAmountUsingForeignRate(localAmount)
     }
 }
 

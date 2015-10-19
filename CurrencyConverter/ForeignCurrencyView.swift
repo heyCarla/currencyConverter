@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-//protocol ForeignCurrencyViewDelegate {
-//    func updateForeignCurrencyLabel(newAmount:Double)
-//}
+protocol ForeignCurrencyViewDelegate: class {
+    func updateForeignCurrencyLabel(newAmount:Double)
+}
 
-class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerDelegate {
+final class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerDelegate {
     
-//    var delegate:ForeignCurrencyViewDelegate?
+    weak var delegate:ForeignCurrencyViewDelegate?
     var updatedAmount:Double        = 0.0
     var yLoc:CGFloat                = 20
     var supportedCurrencies:  [CurrencyValueModel]? {
@@ -133,7 +133,6 @@ class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerDelegat
         formatter.numberStyle   = NSNumberFormatterStyle.CurrencyStyle
         formatter.locale        = NSLocale(localeIdentifier: "en_US")
         let currencyString      = formatter.stringFromNumber(updatedAmount)
-//        let currencyString      = String(original.characters.dropFirst())
         convertedCurrencyLabel.text = "\(currencySymbol)\(String(currencyString!.characters.dropFirst()))"
     }
     
@@ -148,5 +147,7 @@ class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerDelegat
         let currencyModel           = self.supportedCurrencies![index]
         selectedForeignCurrencyRate = currencyModel.currentValue
         selectedForeignCurrencyName = currencyModel.currencyCode
+        
+        delegate?.updateForeignCurrencyLabel(selectedForeignCurrencyRate)
     }
 }
