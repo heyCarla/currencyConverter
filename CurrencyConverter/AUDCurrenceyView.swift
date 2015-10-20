@@ -11,7 +11,6 @@ import UIKit
 
 protocol AUDCurrencyViewDelegate: class {
     func calculateAmountUsingForeignRate(localAmount:String)
-//    func savedLocalInputAmount(inputAmount:String)
 }
 
 final class AUDCurrenceyView: UIView, UITextFieldDelegate {
@@ -23,11 +22,16 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        displayCurrencyViewElements()
+//        displayCurrencyViewElements()
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        
+        displayCurrencyViewElements()
     }
     
     func displayCurrencyViewElements(){
@@ -61,7 +65,7 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         yLoc += labelHeight
         
         // $$ textfield
-        let defaultAmount   = "1.00" // set default amount to $1
+        let defaultAmount   = "0.00" // set default amount to $0
         let amountWidth:CGFloat     = self.frame.size.width-105
         let amountHeight:CGFloat    = 50
         let amountXLoc              = (self.frame.size.width/2)-(amountWidth/2)
@@ -83,6 +87,10 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         
         // add dashed border below the textfield
         addDashedBorderToTextField(amountTextField)
+        
+        // since it's the first instance of the view, apply the exchange rate
+        applyExchangeRateToCurrentAmount(amountTextField.text!)
+        amountTextField.text = "$\(String(applyCurrencyStyleNumberFormat(defaultAmount)))"
     }
     
     

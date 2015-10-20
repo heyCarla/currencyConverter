@@ -11,6 +11,7 @@
 		E10D7F131BCF71BB006D7C06 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E10D7F121BCF71BB006D7C06 /* assets */; settings = {ASSET_TAGS = (); }; };
 		E10D7F151BCF801E006D7C06 /* ForeignCurencyCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10D7F141BCF801E006D7C06 /* ForeignCurencyCollectionViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		E10D7F181BCF8C1F006D7C06 /* ForeignCurrencyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10D7F171BCF8C1F006D7C06 /* ForeignCurrencyCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		E125F3DE1BD6F255007F366C /* AUDCurrenceyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DDAC761BCF576700A0FB27 /* AUDCurrenceyView.swift */; settings = {ASSET_TAGS = (); }; };
 		E15FAC721BC6249B00364FC4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15FAC711BC6249B00364FC4 /* AppDelegate.swift */; };
 		E15FAC741BC6249B00364FC4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15FAC731BC6249B00364FC4 /* ViewController.swift */; };
 		E15FAC771BC6249C00364FC4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E15FAC751BC6249C00364FC4 /* Main.storyboard */; };
@@ -324,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E125F3DE1BD6F255007F366C /* AUDCurrenceyView.swift in Sources */,
 				E15FAC871BC6249C00364FC4 /* CurrencyConverterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
