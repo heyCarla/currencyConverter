@@ -28,6 +28,20 @@ class CurrencyConverterUITests: XCTestCase {
         super.tearDown()
     }
     
+    func testAUDInputToForeignConversionOutputAmount(){
+        
+        let app = XCUIApplication()
+        app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.TextField).element.typeText("12345")
+        app.typeText("\r")
+        
+        let collectionViewsQuery = app.collectionViews
+        collectionViewsQuery.staticTexts["CAD"].swipeLeft()
+        collectionViewsQuery.staticTexts["EUR"].swipeLeft()
+        collectionViewsQuery.staticTexts["GBP"].swipeLeft()
+        collectionViewsQuery.staticTexts["JPY"].swipeLeft()
+        
+    }
+    
     func testExample() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
