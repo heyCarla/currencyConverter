@@ -61,7 +61,8 @@ final class ViewController: UIViewController, AUDCurrencyViewDelegate, ForeignCu
     func calculateAmountUsingForeignRate(localAmount:String) {
         
         // calculate rate in the selected currency and display the new amount in ForeignCurrencyView
-        let currentAmount   = Double(localAmount)
+        let numbersOnlyString = localAmount.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet).joinWithSeparator("")
+        let currentAmount   = Double(numbersOnlyString)
         let convertedAmount = currentAmount! * currentSelectedForeignCurrency()
         print(convertedAmount)
         

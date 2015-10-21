@@ -76,8 +76,7 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         amountTextField.font            = audLabel.font
         amountTextField.textAlignment   = audLabel.textAlignment
         amountTextField.keyboardType    = UIKeyboardType.DecimalPad
-        
-        amountTextField.text            = String(applyCurrencyStyleNumberFormat(defaultAmount))
+        amountTextField.text            = "$\(String(applyCurrencyStyleNumberFormat(defaultAmount)))"
         self.addSubview(amountTextField)
         
         // save this amount for later
@@ -90,7 +89,6 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         
         // since it's the first instance of the view, apply the exchange rate
         applyExchangeRateToCurrentAmount(amountTextField.text!)
-        amountTextField.text = "$\(String(applyCurrencyStyleNumberFormat(defaultAmount)))"
     }
     
     
@@ -114,6 +112,7 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
      
         applyExchangeRateToCurrentAmount(textField.text!)
+        textField.text = "$\(String(applyCurrencyStyleNumberFormat(textField.text!)))"
         self.endEditing(true)
         
         return false
