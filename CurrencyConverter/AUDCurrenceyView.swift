@@ -45,29 +45,30 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         logoImageView.frame = CGRect(x: logoXPos, y: yLoc, width: logoWidth, height: logoHeight)
         self.addSubview(logoImageView)
         
-        let offset:CGFloat = 20
+        let offset:CGFloat = 60 //20
         yLoc += logoHeight+offset
         
         // "AUD" label
-        let labelWidth:CGFloat  = 100
-        let labelHeight:CGFloat = 70
+        let labelWidth:CGFloat  = 150
+        let labelHeight:CGFloat = 60
         let labelXPos           = (self.frame.size.width/2)-(labelWidth/2)
         
         let audLabel                = UILabel(frame: CGRect(x: labelXPos, y: yLoc, width: labelWidth, height: labelHeight))
         audLabel.textColor          = UIColor.whiteColor()
-        audLabel.font               = UIFont(name: "HelveticaNeue-Medium", size: 45)
+        audLabel.font               = UIFont(name: "HelveticaNeue-Medium", size: 60)
         audLabel.textAlignment      = NSTextAlignment.Center
         
         let audString = "aud"
         audLabel.text = audString.uppercaseString
         self.addSubview(audLabel)
 
-        yLoc += labelHeight
+        let labelOffset:CGFloat = 10
+        yLoc += labelHeight+labelOffset
         
         // $$ textfield
         let defaultAmount   = "0.00" // set default amount to $0
         let amountWidth:CGFloat     = self.frame.size.width-105
-        let amountHeight:CGFloat    = 50
+        let amountHeight:CGFloat    = 80
         let amountXLoc              = (self.frame.size.width/2)-(amountWidth/2)
         
         let amountTextField             = UITextField(frame:CGRect(x: amountXLoc, y: yLoc, width: amountWidth, height: amountHeight))
@@ -162,7 +163,7 @@ final class AUDCurrenceyView: UIView, UITextFieldDelegate {
         shapeLayer.strokeColor      = color
         shapeLayer.lineWidth        = 2
         shapeLayer.lineJoin         = kCALineJoinRound
-        shapeLayer.lineDashPattern  = [6,3]
+        shapeLayer.lineDashPattern  = [5,6]
         shapeLayer.path             = UIBezierPath(roundedRect: shapeRect, cornerRadius: 5).CGPath
         
         textField.layer.addSublayer(shapeLayer)

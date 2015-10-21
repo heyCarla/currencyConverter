@@ -29,11 +29,11 @@ final class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerD
     var convertedCurrencyLabel      = UILabel()
     
     lazy var flowLayout: UICollectionViewFlowLayout = {
-        let flowLayout                  = CenterPagingFlowLayout()
-        flowLayout.scrollDirection      = .Horizontal
-        flowLayout.minimumLineSpacing   = 10
-        flowLayout.minimumInteritemSpacing = 10
-        flowLayout.itemSize = CGSizeMake(100, 80)
+        let flowLayout                      = CenterPagingFlowLayout()
+        flowLayout.scrollDirection          = .Horizontal
+        flowLayout.minimumLineSpacing       = 10
+        flowLayout.minimumInteritemSpacing  = 10
+        flowLayout.itemSize                 = CGSizeMake(100, 100)
         return flowLayout
     }()
     
@@ -96,7 +96,7 @@ final class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerD
         
         convertedCurrencyLabel                  = UILabel(frame: CGRect(x: labelXPos, y: yLoc, width: convertedLabelWidth, height: convertedLabelHeight))
         convertedCurrencyLabel.textColor        = UIColor.whiteColor()
-        convertedCurrencyLabel.font             = UIFont(name: "HelveticaNeue-Medium", size: 45)
+        convertedCurrencyLabel.font             = UIFont(name: "HelveticaNeue-Medium", size: 60)
         convertedCurrencyLabel.textAlignment    = NSTextAlignment.Center
         self.addSubview(convertedCurrencyLabel)
         
@@ -105,7 +105,7 @@ final class ForeignCurrencyView: UIView, ForeignCurencyCollectionViewControllerD
     
     func createCollectionView(){
 
-        currencyCollectionViewController.view.frame = CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 80)
+        currencyCollectionViewController.view.frame = CGRect(x: 0, y: yLoc, width: self.frame.size.width, height: 100)
         currencyCollectionViewController.delegate   = self
         self.addSubview(currencyCollectionViewController.view)
         

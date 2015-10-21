@@ -15,7 +15,7 @@ class ForeignCurrencyCollectionViewCell: UICollectionViewCell {
         let label = UILabel(frame: self.bounds)
         
         label.textAlignment = NSTextAlignment.Center
-        label.font          = UIFont(name: "HelveticaNeue-Medium", size: 40)
+        label.font          = UIFont(name: "HelveticaNeue-Medium", size: 60)
         return label
     }()
     

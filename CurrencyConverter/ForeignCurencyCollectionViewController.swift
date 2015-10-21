@@ -136,7 +136,7 @@ class ForeignCurencyCollectionViewController: UICollectionViewController {
 extension ForeignCurencyCollectionViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-            return CGSize(width: 100, height: self.view.frame.size.height)
+            return CGSize(width: 130, height: self.view.frame.size.height)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
